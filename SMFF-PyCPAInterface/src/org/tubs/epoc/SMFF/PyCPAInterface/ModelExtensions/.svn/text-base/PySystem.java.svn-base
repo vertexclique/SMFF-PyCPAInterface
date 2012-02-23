@@ -1,0 +1,30 @@
+package org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions;
+
+import org.python.core.PyObject;
+import org.tubs.epoc.SMFF.ModelElements.AbstractSystemData;
+import org.tubs.epoc.SMFF.PyCPAInterface.ModelInterfaces.SystemType;
+
+public class PySystem extends AbstractSystemData {
+  // the python object in PyCPA corresponding to this task
+  PyObject pyObj = null;
+  SystemType sysObj = null;
+
+  public PySystem(PyObject systemObj) {
+    super();
+    this.pyObj = systemObj;
+    this.sysObj = (SystemType) systemObj.__tojava__(SystemType.class);
+  }
+  
+  PyObject getPyObject(){
+    return pyObj;
+  }
+  
+  /**
+   * Creates a new resource object and adds it to the system model
+   * @param id resource id of the resource
+   * @return PyResource resource
+   */
+  public PyResource addResource(Integer id){
+    return new PyResource(sysObj.add_resource(id));
+  }
+}

@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.tubs.epoc.SMFF</groupId>
+	<artifactId>SMFF-PyCPAInterface</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0-SNAPSHOT</version>
+	<name>SMFF-PyCPAInterface</name>
+
+	<organization>
+		<name>Technische Universität Braunschweig, Institute for Computer and Network Engineering</name>
+		<url>http://www.ida.ing.tu-bs.de/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License (LGPL), Version 3.0</name>
+			<url>http://www.gnu.org/licenses/lgpl-3.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>The license of the project ${project.name} can be seen below:</comments>
+		</license>
+	</licenses>
+	<developers>
+		<developer>
+		<id>moritzn</id>
+			<name>Moritz Neukirchner</name>
+			<email>neukirchner@ida.ing.tu-bs.de</email>
+			<organization>Technische Universität Braunschweig, Institute for Computer and Network Engineering</organization>
+		</developer>
+	</developers>
+	<distributionManagement>
+		<site>
+			<id>smff.sf.net</id>
+            <url>scp://shell.sourceforge.net/home/project-web/smff/htdocs/Core-SMFF</url>
+		</site>
+	</distributionManagement>
+
+	<description>Interface to the Python Implementation of PyCPA. This package provides compositional performance analysis capabilities.</description>
+	<mailingLists>
+		<mailingList>
+			<name>System Models for Free project mailing list</name>
+			<post>neukirchner@ida.ing.tu-bs.de</post>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:svn:https://smff.svn.sourceforge.net/svnroot/smff/Core-SMFF</connection>
+		<developerConnection>scm:svn:https://smff.svn.sourceforge.net/svnroot/smff/Core-SMFF</developerConnection>
+		<url>https://smff.svn.sourceforge.net/svnroot/smff/Core-SMFF</url>
+	</scm>
+
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<reportSets>
+					<reportSet>
+						<id>default</id>
+						<reports>
+							<report>javadoc</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.2</version>
+				<reportSets>
+					<reportSet>
+						<id>src-xref</id>
+						<reports>
+							<report>jxr</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.1</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependencies</report>
+							<report>dependency-convergence</report>
+							<report>dependency-management</report>
+							<report>index</report>
+							<report>plugin-management</report>
+							<report>plugins</report>
+							<report>summary</report>
+							<report>project-team</report>
+							<report>mailing-list</report>
+							<!-- report>cim</report -->
+							<!-- report>issue-tracking</report -->
+							<report>license</report>
+							<report>scm</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+		</plugins>
+	</reporting>
+
+	<dependencies>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.12</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.tubs.epoc.SMFF</groupId>
+			<artifactId>SMFF-Core</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+    
+    	<extensions>
+    		<extension>
+    			<groupId>org.apache.maven.wagon</groupId>
+    			<artifactId>wagon-ssh</artifactId>
+    			<version>1.0-beta-6</version>
+    		</extension>
+    	</extensions>
+    	
+		<directory>bin</directory>
+		<outputDirectory>bin/classes</outputDirectory>
+		<finalName>${project.artifactId}-${project.version}</finalName>
+		<testOutputDirectory>bin/test-classes</testOutputDirectory>
+		<sourceDirectory>src</sourceDirectory>
+		<scriptSourceDirectory>src/scripts</scriptSourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>resources/src</directory>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>resources/test</directory>
+			</testResource>
+		</testResources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jxr-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<excludes>
+						<exclude>**/package.html</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>2.1.1</version>
+				<configuration>
+					<siteDirectory>${project.basedir}/site</siteDirectory>
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>

@@ -1,0 +1,72 @@
+package org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions;
+
+import org.python.core.PyObject;
+import org.tubs.epoc.SMFF.ModelElements.Application.AbstractSchedElemData;
+import org.tubs.epoc.SMFF.PyCPAInterface.ModelInterfaces.TaskType;
+
+public class PyTask extends AbstractSchedElemData{
+  // the python object in PyCPA corresponding to this task
+  PyObject pyObj = null;
+  TaskType taskObj = null;
+
+  public PyTask(PyObject taskObj) {
+    super();
+    this.pyObj = taskObj;
+    this.taskObj = (TaskType) taskObj.__tojava__(TaskType.class);
+  }
+  
+  PyObject getPyObject(){
+    return pyObj;
+  }
+  
+  /**
+   * set the wcet of the task
+   * @param wcet
+   */
+  public void setWcet(Integer wcet){
+    this.taskObj.wcet(wcet);
+  }
+  
+  /**
+   * gets the wcet of the task
+   * @return wcet
+   */
+  public Integer getWcet(){
+    Double attrVal = Math.ceil(pyObj.__getattr__("wcet").asDouble());
+    return attrVal.intValue();
+  }
+  
+  /**
+   * set the bcet of the task
+   * @param wcet
+   */
+  public void setBcet(Integer bcet){
+    this.taskObj.bcet(bcet);
+  }
+  
+  /**
+   * map the task to resource
+   * @param resource
+   */
+  public void mapToResource(PyResource resource){
+    this.taskObj.bind_resource(resource.getPyObject());
+  }
+  
+  /**
+   * create event stream from this task to task
+   * @param task
+   */
+  public void createEventStream(PyTask task){
+    this.taskObj.link_dependent_task(task.getPyObject());
+  }  
+
+  /**
+   * return the n-event busy window length
+   * @param n - number of events
+   * @return busy window length
+   */
+  public Integer getBusyTime(Integer n){
+    return this.taskObj.busy_time(n).asInt();
+  }
+  
+}

@@ -1,0 +1,38 @@
+package org.tubs.epoc.SMFF.PyCPAInterface;
+
+import org.python.core.PyObject;
+import org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions.PyTask;
+import org.tubs.epoc.SMFF.PyCPAInterface.ModelInterfaces.SystemType;
+import org.tubs.epoc.SMFF.PyCPAInterface.factory.SystemFactory;
+import org.tubs.epoc.SMFF.PyCPAInterface.factory.TaskFactory;
+
+
+public class Main {
+
+  SystemType et;
+
+  /**
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) {
+    // what other control options should we provide to the factory?
+    // jsr223 might have some good ideas, but also let's keep some simple code usage
+    // for now, let's just try out and refine
+//    PySystemObjectFactory factory = new PySystemObjectFactory(
+//            SystemType.class, "pycpa.model", "System");
+    
+    SystemFactory sysFactory = new SystemFactory();
+    TaskFactory taskFactory = new TaskFactory();
+    
+    PyTask pyTask = new PyTask(taskFactory.create("task1"));
+    pyTask.setWcet(10);
+    System.out.println(pyTask.getWcet());
+
+    PyObject pyModel = sysFactory.create();
+    SystemType model = (SystemType)pyModel.__tojava__(SystemType.class);
+
+    model.add_junction("JncName", "AND");
+    PyObject res1 = model.add_resource(1);
+    System.out.println(res1.__getattr__("name"));
+  }
+}

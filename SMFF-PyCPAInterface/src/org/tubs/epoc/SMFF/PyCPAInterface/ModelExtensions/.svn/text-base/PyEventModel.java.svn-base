@@ -1,0 +1,7 @@
+package org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions;
+
+import org.tubs.epoc.SMFF.ModelElements.Application.AbstractTimingBehavior;
+
+public class PyEventModel extends AbstractTimingBehavior {
+
+}
