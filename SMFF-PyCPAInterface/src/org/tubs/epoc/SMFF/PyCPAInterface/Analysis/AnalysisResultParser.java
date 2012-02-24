@@ -1,16 +1,14 @@
-package org.tubs.epoc.SMFF.PyCPAInterface;
+package org.tubs.epoc.SMFF.PyCPAInterface.Analysis;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 import org.tubs.epoc.SMFF.ModelElements.SystemModel;
 import org.tubs.epoc.SMFF.ModelElements.Application.ApplicationModel;
 import org.tubs.epoc.SMFF.ModelElements.Application.PJdTimingBehavior;
@@ -21,7 +19,8 @@ import org.tubs.epoc.SMFF.ModelElements.Platform.CommResource;
 import org.tubs.epoc.SMFF.ModelElements.Platform.Resource;
 import org.tubs.epoc.SMFF.ModelElements.Timing.AbstractActivationPattern;
 import org.tubs.epoc.SMFF.ModelElements.Timing.PJActivation;
-import org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions.ResourceAnalysisResult;
+import org.tubs.epoc.SMFF.PyCPAInterface.Analysis.ModelExtensions.ResourceAnalysisResult;
+import org.tubs.epoc.SMFF.PyCPAInterface.Analysis.ModelExtensions.SchedElemAnalysisResult;
 
 public class AnalysisResultParser {
   private File analyzedModel;
@@ -59,9 +58,10 @@ public class AnalysisResultParser {
     List<Element> resList = resourcesResults.getChildren("Resource");
     for (Element resResult : resList) {
       String resString = resResult.getAttributeValue("ID");
+      String loadString = resResult.getAttributeValue("load");
       Resource res = model.getResource(Integer.valueOf(resString));
 
-      res.addExtData(new ResourceAnalysisResult(resResult), false, true, false);
+      res.addExtData(new ResourceAnalysisResult(Double.valueOf(loadString)), false, true, false);
     }
     @SuppressWarnings("unchecked")
     List<Element> cresList = resourcesResults.getChildren("CommResource");
@@ -94,19 +94,20 @@ public class AnalysisResultParser {
       }
 
       // results of tasks
-      @SuppressWarnings("unchecked")
-      List<Element> taskList = resourcesResults.getChildren("Task");
+      List<Element> taskList = appElem.getChildren("Task");
       for (Element taskResult : taskList) {
-        String taskString = taskResult.getAttributeValue("ID");
+        String taskString = taskResult.getAttributeValue("id");
         TaskIdentifier taskId = new TaskIdentifier(Integer.valueOf(appString), Integer.valueOf(appVString), Integer.valueOf(taskString));
         Task task = model.getTask(taskId);
 
 
         // get bcrt and wcrt
-        String bcrtString = taskResult.getAttributeValue("BCRT");
-        task.setBCRT(Integer.valueOf(bcrtString));
-        String wcrtString = taskResult.getAttributeValue("WCRT");
-        task.setWCRT(Integer.valueOf(wcrtString));
+        String bcrtString = taskResult.getAttributeValue("bcrt");
+        Integer bcrt = Integer.valueOf(bcrtString);
+        task.setBCRT(bcrt);
+        String wcrtString = taskResult.getAttributeValue("wcrt");
+        Integer wcrt = Integer.valueOf(wcrtString);
+        task.setWCRT(wcrt);
 
         // get jitter values
         String inJitterString = taskResult.getAttributeValue("input_jitter");
@@ -115,22 +116,27 @@ public class AnalysisResultParser {
         task.setInputBehavior(new PJdTimingBehavior(appPeriod, inJitter, 0));
         int outJitter = Integer.valueOf(outJitterString);
         task.setOutputBehavior(new PJdTimingBehavior(appPeriod, outJitter, 0));
+        
+        // add schedulable element analysis result as data extension (kind of redundant to results directly in task but might come in handy)
+        task.addExtData(new SchedElemAnalysisResult(bcrt, wcrt, appPeriod, inJitter, outJitter), false, true, false);
       }
 
 
       // results of taskslinks
       @SuppressWarnings("unchecked")
-      List<Element> tasklinkList = resourcesResults.getChildren("Tasklink");
+      List<Element> tasklinkList = appElem.getChildren("TaskLink");
       for (Element tasklinkResult : tasklinkList) {
-        String tasklinkString = tasklinkResult.getAttributeValue("ID");
+        String tasklinkString = tasklinkResult.getAttributeValue("id");
         TaskLink tasklink = app.getTaskLink(Integer.valueOf(tasklinkString));
 
 
         // get bcrt and wcrt
-        String bcrtString = tasklinkResult.getAttributeValue("BCRT");
-        tasklink.setBCRT(Integer.valueOf(bcrtString));
-        String wcrtString = tasklinkResult.getAttributeValue("WCRT");
-        tasklink.setWCRT(Integer.valueOf(wcrtString));
+        String bcrtString = tasklinkResult.getAttributeValue("bcrt");
+        Integer bcrt = Integer.valueOf(bcrtString);
+        tasklink.setBCRT(bcrt);
+        String wcrtString = tasklinkResult.getAttributeValue("wcrt");
+        Integer wcrt = Integer.valueOf(wcrtString);
+        tasklink.setWCRT(wcrt);
 
         // get jitter values
         String inJitterString = tasklinkResult.getAttributeValue("input_jitter");
@@ -139,6 +145,9 @@ public class AnalysisResultParser {
         tasklink.setInputBehavior(new PJdTimingBehavior(appPeriod, inJitter, 0));
         int outJitter = Integer.valueOf(outJitterString);
         tasklink.setOutputBehavior(new PJdTimingBehavior(appPeriod, outJitter, 0));
+        
+        // add schedulable element analysis result as data extension (kind of redundant to results directly in task but might come in handy)
+        tasklink.addExtData(new SchedElemAnalysisResult(bcrt, wcrt, appPeriod, inJitter, outJitter), false, true, false);
       }
     }
     inputStream.close();

@@ -1,9 +1,10 @@
-package org.tubs.epoc.SMFF.PyCPAInterface.ModelExtensions;
+package org.tubs.epoc.SMFF.PyCPAInterface.Analysis.ModelExtensions;
 
 import org.jdom.Element;
+import org.tubs.epoc.SMFF.ImportExport.XML.XMLSaveable;
 import org.tubs.epoc.SMFF.ModelElements.Platform.AbstractResourceData;
 
-public class ResourceAnalysisResult extends AbstractResourceData{
+public class ResourceAnalysisResult extends AbstractResourceData implements XMLSaveable{
   private Double load;
   
   
@@ -32,5 +33,29 @@ public class ResourceAnalysisResult extends AbstractResourceData{
 
   public Double getLoad() {
     return load;
+  }
+
+  @Override
+  public Element toXML() {
+    Element root = new Element("ResourceAnalysisResult");
+    root.setAttribute("classname", this.getClass().getName());
+    root.setAttribute("load", String.valueOf(this.load));
+    return root;
+  }
+
+  @Override
+  public boolean isCloneable() {
+    return false;
+  }
+
+  @Override
+  public boolean isOverwrite() {
+    return true;
+  }
+
+  @Override
+  public boolean isIgnoreExisiting() {
+    // TODO Auto-generated method stub
+    return false;
   }
 }

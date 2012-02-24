@@ -1,4 +1,4 @@
-package org.tubs.epoc.SMFF.PyCPAInterface;
+package org.tubs.epoc.SMFF.PyCPAInterface.Analysis;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -44,9 +44,9 @@ public class PyCPAAnalysis implements Callable<Object>{
     new ModelSaver(tempSystemFile).saveModel(model);
 
     // call pyCPA with the given system model
-    String examplePath = pyCPAPath+"\\..\\examples\\smff_loader.py";
+    String examplePath = pyCPAPath+"\\..\\tools\\smff_loader.py";
     String pathArgs[] = {new String("PYTHONPATH="+pyCPAPath)};
-    String command = pythonBinary +" "+ examplePath + " -f "+tempSystemFileName + " -o "+tempSystemFileName;
+    String command = pythonBinary +" "+ examplePath + " -f "+tempSystemFileName + " -of "+tempSystemFileName + " -g "+tempSystemFileName+".pdf";
     System.out.println(command+", "+pathArgs[0]);
     try {
       // execute pyCPA
@@ -56,7 +56,7 @@ public class PyCPAAnalysis implements Callable<Object>{
       BufferedReader _output_ = new BufferedReader(new InputStreamReader(output));
       BufferedReader _error_ = new BufferedReader(new InputStreamReader(error));
       String line = null;
-      while((line=_output_.readLine())!=null);// System.out.println(line);
+      while((line=_output_.readLine())!=null)System.out.println(line);
       while((line=_error_.readLine())!=null) System.out.println(line);
       proc.waitFor();
       // read results from XML and save them in the system model

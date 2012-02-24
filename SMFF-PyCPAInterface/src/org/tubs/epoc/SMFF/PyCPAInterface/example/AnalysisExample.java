@@ -6,9 +6,9 @@ import org.apache.log4j.Logger;
 import org.tubs.epoc.SMFF.ImportExport.XML.ModelLoader;
 import org.tubs.epoc.SMFF.ImportExport.XML.ModelSaver;
 import org.tubs.epoc.SMFF.ModelElements.SystemModel;
-import org.tubs.epoc.SMFF.PyCPAInterface.PyCPAAnalysis;
+import org.tubs.epoc.SMFF.PyCPAInterface.Analysis.PyCPAAnalysis;
 
-public class Example {
+public class AnalysisExample {
 
   /**
    * @param args
@@ -20,7 +20,7 @@ public class Example {
   BasicConfigurator.configure();
     try {
       // create model loader
-      ModelLoader modelLoader = new ModelLoader("C:\\Users\\moritzn\\workspaceJava\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smff_system.xml");
+      ModelLoader modelLoader = new ModelLoader("C:\\Users\\moritzn\\git\\SMFFRepos\\SMFF-PyCPAInterface\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smff_system.xml");
       // load system model
       SystemModel model = modelLoader.generateSystem();
       // instantiate PyCPA analysis
@@ -28,7 +28,7 @@ public class Example {
       // analyze
       pycpa.analyze();
       //save
-      new ModelSaver("C:\\Users\\moritzn\\workspaceJava\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smmf_system_annotated.xml").saveModel(model);
+      new ModelSaver("C:\\Users\\moritzn\\git\\SMFFRepos\\SMFF-PyCPAInterface\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smmf_system_annotated.xml").saveModel(model);
     } catch (Exception e) {
       e.printStackTrace();
     }
