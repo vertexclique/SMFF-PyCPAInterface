@@ -1,0 +1,15 @@
+ -----
+ SystemFactories
+ -----
+
+ 
+Introduction
+
+
+ This module provides an interface for pyCPA. pyCPA is a pragmatic Python implementation of Compositional Performance Analysis (aka the SymTA/S approach provided by Symtavision) used for research in worst-case timing analysis. The source of pyCPA is available at {{http://code.google.com/p/pycpa/}}.
+
+ This interface allows to perform worst-case timing analysis to acquire metrics such as worst-case response times of tasks in SMFF models. This can be used within the generation process to e.g. generate models that have a certain slack w.r.t. task deadlines. Another option is to use the pyCPA analysis as reference for the evaluation of timing analysis approaches. You could also use SMFF and pyCPA to develop optimization algorithms for real-time systems without having to implement your own timing analysis.
+
+ Together SMFF and pyCPA provide a powerful combination of testcase generation and reference timing analysis.
+ 
+ There is an example on how to use this module included in the code.
