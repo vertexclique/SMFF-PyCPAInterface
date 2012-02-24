@@ -19,16 +19,22 @@ public class AnalysisExample {
   logger.setLevel(Level.WARN);
   BasicConfigurator.configure();
     try {
+      // Paths and files
+      String systemFile = System.getProperty("user.dir")+"\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smff_system.xml";
+      String systemOutFile = System.getProperty("user.dir")+"\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smff_system_annotated.xml";
+      String pythonBinary = "C:\\Programme\\Python2.7.2\\python.exe";
+      String pyCPASourcePath = "C:\\Users\\moritzn\\workspaceJava\\pycpa\\src";
+      
       // create model loader
-      ModelLoader modelLoader = new ModelLoader("C:\\Users\\moritzn\\git\\SMFFRepos\\SMFF-PyCPAInterface\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smff_system.xml");
+      ModelLoader modelLoader = new ModelLoader(systemFile);
       // load system model
       SystemModel model = modelLoader.generateSystem();
       // instantiate PyCPA analysis
-      PyCPAAnalysis pycpa = new PyCPAAnalysis(model, "C:\\Programme\\Python2.7.2\\python.exe", "C:\\Users\\moritzn\\workspaceJava\\pycpa\\src");
+      PyCPAAnalysis pycpa = new PyCPAAnalysis(model, pythonBinary, pyCPASourcePath);
       // analyze
       pycpa.analyze();
       //save
-      new ModelSaver("C:\\Users\\moritzn\\git\\SMFFRepos\\SMFF-PyCPAInterface\\SMFF-PyCPAInterface\\src\\org\\tubs\\epoc\\SMFF\\PyCPAInterface\\example\\smmf_system_annotated.xml").saveModel(model);
+      new ModelSaver(systemOutFile).saveModel(model);
     } catch (Exception e) {
       e.printStackTrace();
     }

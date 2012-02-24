@@ -46,7 +46,7 @@ public class PyCPAAnalysis implements Callable<Object>{
     // call pyCPA with the given system model
     String examplePath = pyCPAPath+"\\..\\tools\\smff_loader.py";
     String pathArgs[] = {new String("PYTHONPATH="+pyCPAPath)};
-    String command = pythonBinary +" "+ examplePath + " -f "+tempSystemFileName + " -of "+tempSystemFileName + " -g "+tempSystemFileName+".pdf";
+    String command = pythonBinary +" "+ examplePath + " -f "+tempSystemFileName + " -of "+tempSystemFileName;
     System.out.println(command+", "+pathArgs[0]);
     try {
       // execute pyCPA

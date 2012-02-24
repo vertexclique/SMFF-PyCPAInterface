@@ -94,6 +94,7 @@ public class AnalysisResultParser {
       }
 
       // results of tasks
+      @SuppressWarnings("unchecked")
       List<Element> taskList = appElem.getChildren("Task");
       for (Element taskResult : taskList) {
         String taskString = taskResult.getAttributeValue("id");
